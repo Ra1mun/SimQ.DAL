@@ -1,23 +1,34 @@
 using MongoDB.Driver;
 using Simq.Dal.Models;
+using ProblemDto = SimQCore.Modeller.Problem;  
 
 namespace Simq.Dal.Services;
 
-public class ProblemService
+internal interface IProblemService
 {
-    private readonly IMongoCollection<Problem> _problemRepository;
+    ProblemDto GetProblem(string id);
     
-    public ProblemService(ProblemDatabaseSettings settings)
-    {
-        var client = new MongoClient(settings.ConnectionString);
-        var database = client.GetDatabase(settings.DatabaseName);
+    void CreateProblem(ProblemDto problem);
+}
 
-        _problemRepository = database.GetCollection<Problem>(settings.ProblemCollectionName);
+public class ProblemService : IProblemService
+{
+    private readonly IProblemRepostiory _repository;
+    
+    public ProblemService(ProblemRepository problemRepository)
+    {
+        _repository = problemRepository;
     }
 
-    public Problem Get(string id)
+    public ProblemDto GetProblem(string id)
     {
-        var findProblems = _problemRepository.Find(problem => problem.Id == id);
-        return findProblems.FirstOrDefault();
+        var problem = _repository.FindProblem(id);
+        
+        return new ProblemDto();
+    }
+
+    public void CreateProblem(ProblemDto problem)
+    {
+        throw new NotImplementedException();
     }
 }

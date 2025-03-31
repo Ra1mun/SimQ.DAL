@@ -4,11 +4,12 @@ namespace SimQCore.Library.Distributions
 {
     public class GammaDistribution : IDistribution
     {
+        private double _k;
+        private double _theta;
         delegate double SelectedMethod(double k);
 
         private BaseSensor _baseSensor;
-        private double _k;
-        private double _theta;
+        
         private ExponentialDistribution _exponentialDistribution;
         private NormalDistribution _normalDistribution;
         private SelectedMethod _selectedMethod;

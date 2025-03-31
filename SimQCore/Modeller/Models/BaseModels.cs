@@ -1,6 +1,6 @@
 ﻿namespace SimQCore.Modeller.BaseModels
 {
-    enum AgentType
+    public enum AgentType
     {
         Source,
         ServiceBlock,
@@ -8,7 +8,7 @@
         Call
     }
 
-    abstract class AgentModel {
+    public abstract class AgentModel {
         public abstract string Id { get; set; }
         public abstract Call DoEvent(double T);
         public abstract double NextEventTime { get; }
@@ -17,13 +17,13 @@
         public abstract bool IsActive();
     }
 
-    abstract class Call : AgentModel
+    public abstract class Call : AgentModel
     {
         public override string EventTag => "Call";
         public override AgentType Type => AgentType.Call;
     }
 
-    abstract class Source : AgentModel
+    public abstract class Source : AgentModel
     {
         private static int _objectCounter;
         public Source() => Id = "SRC_" + _objectCounter++;
@@ -31,7 +31,7 @@
         public override AgentType Type => AgentType.Source;
     }
 
-    abstract class ServiceBlock : AgentModel
+    public abstract class ServiceBlock : AgentModel
     {
         private static int _objectCounter;
         public ServiceBlock() => Id = "SBLOCK_" + _objectCounter++;
@@ -42,7 +42,7 @@
         public abstract bool TakeCall(Call call, double T);
     }
 
-    abstract class Buffer : AgentModel
+    public abstract class Buffer : AgentModel
     {
         private static int _objectCounter;
         public Buffer() => Id = "BUNK_" + _objectCounter++;

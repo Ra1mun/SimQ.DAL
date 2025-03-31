@@ -4,12 +4,13 @@ namespace SimQCore.Library.Distributions
 {
     public class ExponentialDistribution : IDistribution
     {
+        private double rate;
         private double[] stairWidth = new double[257];
         private double[] stairHeight = new double[256];
         private const double x1 = 7.69711747013104972;
         private const double A = 3.9496598225815571993e-3;
         private BaseSensor _baseSensor;
-        private double rate;
+        
 
         /// <summary>
         /// ctor

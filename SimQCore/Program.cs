@@ -1,19 +1,14 @@
-﻿using SimQCore.Library;
-using SimQCore.Modeller;
+﻿using SimQCore.Modeller;
 using SimQCore.Modeller.BaseModels;
 using SimQCore.Modeller.CustomModels;
 using System.Collections.Generic;
-
 namespace SimQCore
 {
     class Program
     {
         static void Main()
         {
-            // Часть Миши
-            Tests.TestTimeGeneration1();
-
-            // Часть Эмиля
+            
             SimulationModeller SM = new();
 
             SimpleServiceBlock serviceBlock = new();

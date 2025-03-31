@@ -5,8 +5,8 @@
     /// </summary>
     public class GeometricDistibution : IDistribution
     {
-        private BaseSensor _baseSensor;
         private double p;
+        private BaseSensor _baseSensor;
 
         /// <summary>
         /// ctor

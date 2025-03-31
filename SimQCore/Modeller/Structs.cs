@@ -14,7 +14,7 @@ namespace SimQCore.Modeller
         /// </summary>
         public AgentModel Agent;
     }
-    struct Problem
+    public struct Problem
     {
         /// <summary>
         /// Время, в течение которого будет выполняться моделирование.
