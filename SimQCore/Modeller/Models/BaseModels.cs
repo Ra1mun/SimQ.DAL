@@ -1,4 +1,6 @@
-﻿namespace SimQCore.Modeller.BaseModels
+﻿using System.Collections.Generic;
+
+namespace SimQCore.Modeller.BaseModels
 {
     public enum AgentType
     {
@@ -34,6 +36,7 @@
     public abstract class ServiceBlock : AgentModel
     {
         private static int _objectCounter;
+        public List<Buffer> BindedBuffers = new();
         public ServiceBlock() => Id = "SBLOCK_" + _objectCounter++;
         public override string EventTag => "ServiceBlock";
         public override AgentType Type => AgentType.ServiceBlock;

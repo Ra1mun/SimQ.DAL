@@ -9,5 +9,5 @@ public class Problem
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
     
-    public List<IAgentModel> Agents { get; set; }
+    public List<Agent> Agents { get; set; }
 }

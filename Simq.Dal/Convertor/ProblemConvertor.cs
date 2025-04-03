@@ -1,15 +1,9 @@
-﻿using System.Diagnostics;
-using Simq.Dal.Models;
-using SimQCore.Modeller.BaseModels;
-using ProblemDto = SimQCore.Modeller.Problem;
+﻿using ProblemDto = SimQCore.Modeller.Problem;
 using Problem = Simq.Dal.Models.Problem;
-using AgentTypeDto = SimQCore.Modeller.BaseModels.AgentType;
-using AgentType = Simq.Dal.Models.AgentType;
-using Source = Simq.Dal.Models.Source;
 
 namespace Simq.Dal;
 
-internal interface IProblemConvertor
+public interface IProblemConvertor
 {
     Problem Convert(ProblemDto dto);
     ProblemDto Convert(Problem problem);
@@ -17,32 +11,25 @@ internal interface IProblemConvertor
 
 public class ProblemConvertor : IProblemConvertor
 {
+    private readonly IAgentConverter _agentConverter = new AgentConverter();
+    
     public Problem Convert(ProblemDto dto)
     {
+        var agents = _agentConverter.Convert(dto.Agents);
+
         return new Problem
-        {
-            Agents = 
-        }
-    }
-
-    public ProblemDto Convert(Problem problem)
-    {
-        var agents = ConvertAgents(problem.Agents);
-
-        return new ProblemDto
         {
             Agents = agents
         };
     }
-    
-    
-    private List<IAgentModel> ConvertAgents(List<AgentModel> agents)
+
+    public ProblemDto Convert(Problem problem)
     {
-        var result = new List<IAgentModel>();
-        foreach (var agent in agents)
+        var agents = _agentConverter.Convert(problem.Agents);
+        
+        return new ProblemDto
         {
-            IAgentModel agentModel;
-            
-        }
+            Agents = agents
+        };
     }
 }

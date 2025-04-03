@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SimQCore.Modeller.CustomModels
 {
-    class SimpleSource : Source
+    public class SimpleSource : Source
     {
         private IDistribution dist = new PoissonDistribution(0.2);
 
@@ -41,13 +41,13 @@ namespace SimQCore.Modeller.CustomModels
         public override bool IsActive() => true;
     }
 
-    class SimpleServiceBlock : ServiceBlock
+    public class SimpleServiceBlock : ServiceBlock
     {
         private IDistribution dist = new PoissonDistribution(0.3);
 
         private double _delta = double.PositiveInfinity;
         private Call _processCall;
-        List<BaseModels.Buffer> _bindedBuffers = new();
+        
         private string _serverBlockId;
 
         public override Call ProcessCall => _processCall;
@@ -55,7 +55,7 @@ namespace SimQCore.Modeller.CustomModels
         public bool IsFree => _processCall == null;
         public override string EventTag => "SimpleServiceBlock";
         public override double NextEventTime => _delta;
-        public override void BindBunker(BaseModels.Buffer bunker) => _bindedBuffers.Add(bunker);
+        public override void BindBunker(BaseModels.Buffer bunker) => BindedBuffers.Add(bunker);
 
         private bool AcceptCall(Call call, double T)
         {
@@ -79,7 +79,7 @@ namespace SimQCore.Modeller.CustomModels
 
         private Call GetCallFromBunker()
         {
-            foreach (var buffer in _bindedBuffers)
+            foreach (var buffer in BindedBuffers)
             {
                 if (buffer.IsEmpty) continue;
                 return buffer.PassCall();
@@ -103,7 +103,7 @@ namespace SimQCore.Modeller.CustomModels
 
         private bool SendToBunker(Call model, double _)
         {
-            foreach (var buffer in _bindedBuffers)
+            foreach (var buffer in BindedBuffers)
             {
                 if (buffer.TakeCall(model)) return true;       
             }
@@ -118,7 +118,7 @@ namespace SimQCore.Modeller.CustomModels
         public override bool IsActive() => true;
     }
 
-    class SimpleStackBunker : BaseModels.Buffer
+    public class SimpleStackBunker : BaseModels.Buffer
     {
         private Stack<Call> _calls = new();
         public override string Id { get; set; }
@@ -141,7 +141,7 @@ namespace SimQCore.Modeller.CustomModels
         public override string EventTag => "SimpleStackBunker";
     }
 
-    class SimpleQueueBunker : BaseModels.Buffer
+    public class SimpleQueueBunker : BaseModels.Buffer
     {
         private Queue<Call> _calls = new();
         public override string Id { get; set; }
@@ -166,7 +166,7 @@ namespace SimQCore.Modeller.CustomModels
         public override string EventTag => "SimpleQueueBunker";
     }
 
-    class SimpleCall : Call
+    public class SimpleCall : Call
     {
         public override string Id { get; set; }
         public override string EventTag => "Call";
