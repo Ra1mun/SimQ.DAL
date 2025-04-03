@@ -30,11 +30,19 @@ public class AgentConverter : IAgentConverter
 
     private static Agent ConvertAgentModel(AgentModel agentModel)
     {
-        if (agentModel.Type == AgentType.ServiceBlock)
+        if (agentModel is ServiceBlockDto serviceBlockDto)
         {
-            var serviceBlock = new ServiceBlock();
-            var serviceBlockDto = agentModel as ServiceBlockDto;
+            var serviceBlock = new ServiceBlock()
+            {
+                Type = serviceBlockDto.Type,
+                ReflectionType = serviceBlockDto.GetType().Name
+            };
             var bufferDtos = serviceBlockDto.BindedBuffers;
+            
+            if (!bufferDtos.Any())
+            {
+                return serviceBlock;
+            }
             
             var buffers = bufferDtos.Select(bufferDto => new Agent
             {
@@ -61,10 +69,9 @@ public class AgentConverter : IAgentConverter
             throw new ArgumentException($"Agent {agent.ReflectionType} does not exist");
         }
 
-        if (agent.Type == AgentType.ServiceBlock)
+        if (agent is ServiceBlock serviceBlock)
         {
             var serviceBlockDto = agentModel as ServiceBlockDto;
-            var serviceBlock = agent as ServiceBlock;
             var buffers = serviceBlock.BindedBuffer;
             if (!buffers.Any())
             {

@@ -4,16 +4,17 @@ using ProblemDto = SimQCore.Modeller.Problem;
 
 namespace Simq.Dal.Services;
 
-internal interface IProblemService
+public interface IProblemService
 {
     ProblemDto GetProblem(string id);
     
-    void CreateProblem(ProblemDto problem);
+    string CreateProblem(ProblemDto problem);
 }
 
 public class ProblemService : IProblemService
 {
     private readonly IProblemRepostiory _repository;
+    private readonly IProblemConvertor _converter = new ProblemConvertor();
     
     public ProblemService(ProblemRepository problemRepository)
     {
@@ -22,13 +23,20 @@ public class ProblemService : IProblemService
 
     public ProblemDto GetProblem(string id)
     {
+        if (!_repository.ExistProblem(id))
+        {
+            return new ProblemDto();
+        }
+        
         var problem = _repository.FindProblem(id);
         
-        return new ProblemDto();
+        return _converter.Convert(problem);
     }
 
-    public void CreateProblem(ProblemDto problem)
+    public string CreateProblem(ProblemDto problemDto)
     {
-        throw new NotImplementedException();
+        var problem = _converter.Convert(problemDto);
+        
+        return _repository.AddProblem(problem);
     }
 }

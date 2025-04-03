@@ -1,6 +1,5 @@
 ﻿using MongoDB.Driver;
 using Simq.Dal.Models;
-using Problem = Simq.Dal.Models.Problem;
 
 namespace Simq.Dal.Services;
 
@@ -8,7 +7,7 @@ internal interface IProblemRepostiory
 {
     Problem FindProblem(string id);
     
-    void AddProblem(Problem problem);
+    string AddProblem(Problem problem);
     
     bool ExistProblem(string id);
 }
@@ -27,14 +26,14 @@ public class ProblemRepository : IProblemRepostiory
 
     public Problem FindProblem(string id)
     {
-        var filter = Builders<Problem>.Filter.Eq(p => p.Id, id);
-        
-        return _collection.Find(filter).FirstOrDefault();
+        return _collection.Find(p => p.Id == id).FirstOrDefault();
     }
 
-    public void AddProblem(Problem problem)
+    public string AddProblem(Problem problem)
     {   
         _collection.InsertOne(problem);
+        
+        return problem.Id;
     }
 
     public bool ExistProblem(string id)
