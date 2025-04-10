@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Simq.Dal.Models;
+namespace SimQ.DAL.Models.ProblemAggregation;
 
 public class Problem
 {

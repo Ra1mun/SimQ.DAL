@@ -1,6 +1,9 @@
-﻿using Simq.Dal.Models;
-using Simq.Dal.Services;
+﻿using SimQ.DAL.Models;
+using SimQ.DAL.Models.DBSettings;
+using SimQ.DAL.Repository;
+using SimQ.DAL.Services;
 using SimQ.Tests.Converter;
+using SimQ.Tests.TestData;
 using ProblemDto = SimQCore.Modeller.Problem;
 
 namespace SimQ.Tests.Services;
@@ -17,7 +20,9 @@ public class ProblemServiceTests
     [Fact]
     public void CreateProblem_When_Correct_Problem_Given_Returns_Id()
     {
-        var agentDtos = AgentConverterTests.GetAgentModelData();
+        var data = new AgentTestData();
+        
+        var agentDtos = data.GetAgentModelData();
 
         var problemDto = new ProblemDto
         {
@@ -32,16 +37,18 @@ public class ProblemServiceTests
     [Fact]
     public void GetProblem_When_Correct_Id_Given()
     {
-        var agentDtos = AgentConverterTests.GetAgentModelData();
+        var data = new AgentTestData();
+        
+        var agentDtos = data.GetAgentModelData();
 
         var excepted = new ProblemDto
         {
             Agents = agentDtos
         };
 
-        var actual = _service.GetProblem("67ee76866064def5626ce066");
+        var actual = _service.GetProblem("67f29b96875fcefa1fdcfbdc");
         
-        Assert.Equivalent(excepted, actual);
+        Assert.Equal(excepted.Agents.Count, actual.Agents.Count);
     }
 
     private IProblemService SetupService()

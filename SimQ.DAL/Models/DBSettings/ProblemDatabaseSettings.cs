@@ -1,4 +1,4 @@
-namespace Simq.Dal.Models;
+namespace SimQ.DAL.Models.DBSettings;
 
 public record ProblemDatabaseSettings
 {

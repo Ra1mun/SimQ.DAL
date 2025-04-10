@@ -1,7 +1,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using SimQCore.Modeller.BaseModels;
 
-namespace Simq.Dal.Models;
+namespace SimQ.DAL.Models.ProblemAggregation;
 
 [BsonDiscriminator(RootClass = true)]
 [BsonKnownTypes(typeof(ServiceBlock))]
@@ -11,7 +11,10 @@ public class Agent
     public AgentType Type { get; set; }
     
     [BsonElement]
-    public string ReflectionType { get; set; }
+    public required string ReflectionType { get; set; }
+    
+    [BsonElement]
+    public required string Id { get; set; }
 
     //List<string> LinkedAgents { get; set; }
 }

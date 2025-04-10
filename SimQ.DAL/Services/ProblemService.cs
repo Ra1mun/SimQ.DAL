@@ -1,8 +1,8 @@
-using MongoDB.Driver;
-using Simq.Dal.Models;
+using SimQ.DAL.Convertor;
+using SimQ.DAL.Repository;
 using ProblemDto = SimQCore.Modeller.Problem;  
 
-namespace Simq.Dal.Services;
+namespace SimQ.DAL.Services;
 
 public interface IProblemService
 {

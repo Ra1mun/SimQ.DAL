@@ -1,7 +1,9 @@
 ﻿using MongoDB.Driver;
-using Simq.Dal.Models;
+using SimQ.DAL.Models;
+using SimQ.DAL.Models.DBSettings;
+using SimQ.DAL.Models.ProblemAggregation;
 
-namespace Simq.Dal.Services;
+namespace SimQ.DAL.Repository;
 
 internal interface IProblemRepostiory
 {

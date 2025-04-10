@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimQCore", "SimQCore\SimQCore.csproj", "{D7DB6CAC-890B-447C-A082-272882CD8B16}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simq.Dal", "Simq.Dal\Simq.Dal.csproj", "{23B779E4-D8AF-4553-98C1-3D4C502A3124}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimQ.DAL", "SimQ.DAL\SimQ.DAL.csproj", "{23B779E4-D8AF-4553-98C1-3D4C502A3124}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimQ.Tests", "SimQ.Tests\SimQ.Tests.csproj", "{C98D4844-6C87-4359-9283-3BF6CDC1DC0C}"
 EndProject

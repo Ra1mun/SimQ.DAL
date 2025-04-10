@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Simq.Dal\Simq.Dal.csproj" />
+      <ProjectReference Include="..\SimQ.DAL\SimQ.DAL.csproj" />
       <ProjectReference Include="..\SimQCore\SimQCore.csproj" />
     </ItemGroup>
 
