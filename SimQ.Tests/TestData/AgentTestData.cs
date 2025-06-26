@@ -1,7 +1,9 @@
 ﻿using SimQ.DAL.Models.ProblemAggregation;
 using SimQCore.Modeller.BaseModels;
 using SimQCore.Modeller.CustomModels;
+using Buffer = SimQ.DAL.Models.ProblemAggregation.Buffer;
 using ServiceBlock = SimQ.DAL.Models.ProblemAggregation.ServiceBlock;
+using Source = SimQ.DAL.Models.ProblemAggregation.Source;
 
 namespace SimQ.Tests.TestData;
 
@@ -9,21 +11,21 @@ public class AgentTestData
 {
     public List<AgentModel> GetAgentModelData()
     {
-        SimpleServiceBlock serviceBlock = new();
+        ExponentialServiceBlock serviceBlock = new();
         SimpleStackBunker simpleStack = new();
         SimpleSource source1 = new();
         SimpleSource source2 = new();
-        SimpleSource source3 = new();
     
         serviceBlock.BindBunker(simpleStack);
     
-        List<AgentModel> agents = new();
-        agents.Add(source1);
-        agents.Add(source2);
-        agents.Add(source3);
-        agents.Add(serviceBlock);
-        agents.Add(simpleStack);
-            
+        List<AgentModel> agents =
+        [
+            source1,
+            source2,
+            serviceBlock,
+            simpleStack
+        ];
+
         return agents;
     }
     
@@ -31,33 +33,23 @@ public class AgentTestData
     {
         var serviceBlock = new ServiceBlock
         {
-            Type = AgentType.ServiceBlock,
-            ReflectionType = "SimpleServiceBlock",
+            ReflectionType = "ExponentialServiceBlock",
             Id = "SBLOCK_0"
         };
-        var stack = new Agent
+        var stack = new Buffer
         {
-            Type = AgentType.Buffer,
             ReflectionType = "SimpleStackBunker",
             Id = "BUNK_0",
         };
-        var source1 = new Agent
+        var source1 = new Source
         {
-            Type = AgentType.Source,
             ReflectionType = "SimpleSource",
             Id = "SRC_0",
         };
-        var source2 = new Agent
+        var source2 = new Source
         {
-            Type = AgentType.Source,
             ReflectionType = "SimpleSource",
             Id = "SRC_1",
-        };
-        var source3 = new Agent
-        {
-            Type = AgentType.Source,
-            ReflectionType = "SimpleSource",
-            Id = "SRC_2",
         };
     
         serviceBlock.BindBuffer(stack);
@@ -65,7 +57,6 @@ public class AgentTestData
         List<Agent> agents = new();
         agents.Add(source1);
         agents.Add(source2);
-        agents.Add(source3);
         agents.Add(serviceBlock);
         agents.Add(stack);
             

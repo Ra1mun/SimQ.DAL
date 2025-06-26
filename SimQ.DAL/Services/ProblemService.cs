@@ -8,15 +8,17 @@ public interface IProblemService
 {
     ProblemDto GetProblem(string id);
     
-    string CreateProblem(ProblemDto problem);
+    string InsertProblem(ProblemDto problem);
+    
+    bool UpdateProblem(string id, ProblemDto problem);
 }
 
 public class ProblemService : IProblemService
 {
-    private readonly IProblemRepostiory _repository;
+    private readonly IProblemRepository _repository;
     private readonly IProblemConvertor _converter = new ProblemConvertor();
     
-    public ProblemService(ProblemRepository problemRepository)
+    public ProblemService(IProblemRepository problemRepository)
     {
         _repository = problemRepository;
     }
@@ -33,10 +35,20 @@ public class ProblemService : IProblemService
         return _converter.Convert(problem);
     }
 
-    public string CreateProblem(ProblemDto problemDto)
+    public string InsertProblem(ProblemDto problemDto)
     {
         var problem = _converter.Convert(problemDto);
         
         return _repository.AddProblem(problem);
+    }
+
+    public bool UpdateProblem(string id, ProblemDto problemDto)
+    {
+        if (!_repository.ExistProblem(id))
+            return false;
+        
+        var problem = _converter.Convert(problemDto);
+        
+        return _repository.TryToEditProblem(id, problem);
     }
 }

@@ -1,20 +1,20 @@
 ﻿using MongoDB.Driver;
-using SimQ.DAL.Models;
 using SimQ.DAL.Models.DBSettings;
 using SimQ.DAL.Models.ProblemAggregation;
 
 namespace SimQ.DAL.Repository;
 
-internal interface IProblemRepostiory
+public interface IProblemRepository
 {
     Problem FindProblem(string id);
     
     string AddProblem(Problem problem);
+    bool TryToEditProblem(string id, Problem newProblem);
     
     bool ExistProblem(string id);
 }
 
-public class ProblemRepository : IProblemRepostiory
+public class ProblemRepository : IProblemRepository
 {
     private readonly IMongoCollection<Problem> _collection;
     
@@ -36,6 +36,15 @@ public class ProblemRepository : IProblemRepostiory
         _collection.InsertOne(problem);
         
         return problem.Id;
+    }
+
+    public bool TryToEditProblem(string id, Problem newProblem)
+    {
+        var filter = Builders<Problem>.Filter.Eq(p => p.Id, id);
+        
+        var result = _collection.ReplaceOne(filter, newProblem);
+        
+        return result.ModifiedCount > 0;
     }
 
     public bool ExistProblem(string id)

@@ -40,6 +40,156 @@ namespace SimQCore.Modeller.CustomModels
 
         public override bool IsActive() => true;
     }
+    
+    public class BernoulliSource : Source
+    {
+        private IDistribution dist = new BernoulliDistribution(0.2);
+
+        private int callCounter;
+        private string _sourceID;
+        private double _tau;
+        public override string Id { get => _sourceID; set => _sourceID = value; }
+        public override string EventTag => "SimpleSource";
+        public BernoulliSource() : base() => _tau = CalcNextEventTime(0);
+
+        private Call CreateCall()
+        {
+            SimpleCall call = new() { Id = "CALL_" + Id + "_" + callCounter++ };
+            return call;
+        }
+
+        public override Call DoEvent(double T)
+        {
+            CalcNextEventTime(T);
+            return CreateCall();
+        }
+
+        public override double NextEventTime => _tau;
+
+        private double CalcNextEventTime(double T)
+        {
+            // https://habr.com/ru/post/265321/
+                
+            _tau = T + dist.Generate();
+            return _tau;
+        }
+
+        public override bool IsActive() => true;
+    }
+    
+    public class BetaSource : Source
+    {
+        private IDistribution dist = new BetaDistribution(0.2, 0.3);
+
+        private int callCounter;
+        private string _sourceID;
+        private double _tau;
+        public override string Id { get => _sourceID; set => _sourceID = value; }
+        public override string EventTag => "SimpleSource";
+        public BetaSource() : base() => _tau = CalcNextEventTime(0);
+
+        private Call CreateCall()
+        {
+            SimpleCall call = new() { Id = "CALL_" + Id + "_" + callCounter++ };
+            return call;
+        }
+
+        public override Call DoEvent(double T)
+        {
+            CalcNextEventTime(T);
+            return CreateCall();
+        }
+
+        public override double NextEventTime => _tau;
+
+        private double CalcNextEventTime(double T)
+        {
+            // https://habr.com/ru/post/265321/
+                
+            _tau = T + dist.Generate();
+            return _tau;
+        }
+
+        public override bool IsActive() => true;
+    }
+    
+    public class ExponentialServiceBlock : ServiceBlock
+    {
+        private IDistribution dist = new ExponentialDistribution(0.3);
+
+        private double _delta = double.PositiveInfinity;
+        private Call _processCall;
+        
+        private string _serverBlockId;
+
+        public override Call ProcessCall => _processCall;
+        public override string Id { get => _serverBlockId; set => _serverBlockId = value; }
+        public bool IsFree => _processCall == null;
+        public override string EventTag => "SimpleServiceBlock";
+        public override double NextEventTime => _delta;
+        public override void BindBunker(BaseModels.Buffer bunker) => BindedBuffers.Add(bunker);
+
+        private bool AcceptCall(Call call, double T)
+        {
+            _processCall = call;
+            _delta = gS(T);
+            return true;
+        }
+
+        private double gS(double T)
+        {
+            return T + dist.Generate();
+        }
+
+        private Call EndProcessCall()
+        {
+            Call temp = _processCall;
+            _processCall = null;
+            _delta = double.PositiveInfinity;
+            return temp;
+        }
+
+        private Call GetCallFromBunker()
+        {
+            foreach (var buffer in BindedBuffers)
+            {
+                if (buffer.IsEmpty) continue;
+                return buffer.PassCall();
+            }
+            return null;
+        }
+
+        private void TakeNextCall(double T)
+        {
+            Call nextCall = GetCallFromBunker();
+            if (nextCall != null) AcceptCall(nextCall, T);
+        }
+
+        public override Call DoEvent(double T)
+        {
+            Call temp = EndProcessCall();
+            TakeNextCall(T);
+
+            return temp;
+        }
+
+        private bool SendToBunker(Call model, double _)
+        {
+            foreach (var buffer in BindedBuffers)
+            {
+                if (buffer.TakeCall(model)) return true;       
+            }
+            return false;
+        }
+
+        public override bool TakeCall(Call call, double T)
+        {
+            return IsFree ? AcceptCall(call, T) : SendToBunker(call, T);
+        }
+
+        public override bool IsActive() => true;
+    }
+
 
     public class SimpleServiceBlock : ServiceBlock
     {

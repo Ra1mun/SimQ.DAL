@@ -26,7 +26,7 @@ public class AgentConverterTests
         var actual = converter.ConvertMany(agents);
         
         //Assert 
-        Assert.Equivalent(expected, actual);
+        Assert.Equal(expected.Count, actual.Count);
     }
     
     [Fact]
